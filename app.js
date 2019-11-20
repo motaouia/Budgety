@@ -45,7 +45,23 @@ var UIController = (function(){
 //Global App Controller
 var controller = (function(budgtCntrl, UICtrl){
 
-    var DOMClasses = UICtrl.getDOMInputClassesPublic();
+    var setupEventListeners = function(){
+      var DOMClasses = UICtrl.getDOMInputClassesPublic();
+
+        //Event Handler of Button Add : we choice two approch
+        //If the User click the Button  O r press the Button Enter
+
+  document.querySelector(DOMClasses.addButtnClass).addEventListener('click',ctrlAddItem);
+
+  document.addEventListener('keypress', function(event){
+
+    if(event.keyCode === 13 || event.which === 13){
+            // event.preventDefault();
+           // console.log('Handlig Enter Prseed');
+             ctrlAddItem();
+          }
+      });
+    };
 
     var ctrlAddItem = function(){
       console.log('function ctrlAddItem');
@@ -65,20 +81,15 @@ var controller = (function(budgtCntrl, UICtrl){
 
     }
 
-  //Event Handler of Button Add : we choice two approch
-  //If the User click the Button  O r press the Button Enter
-  
-  document.querySelector(DOMClasses.addButtnClass).addEventListener('click',ctrlAddItem);
+    return{
 
-  document.addEventListener('keypress', function(event){
+      init : function(){
+        console.log("Application has Started ...");
+        setupEventListeners();
+      }
 
-    if(event.keyCode === 13 || event.which === 13){
-     // event.preventDefault();
-     // console.log('Handlig Enter Prseed');
-      ctrlAddItem();
-    }
-
-  });
-
+    };
 
 })(budgetController,UIController);
+
+controller.init();
