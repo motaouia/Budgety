@@ -7,16 +7,52 @@ var budgetController = (function(){
 
 //UI Controller
 var UIController = (function(){
-    //Some Code Here
+  //A Private Obeject that contains the classes name of input field
+  //I write it Like That to avoid to change in multiple pieces of my Page 
+  //If they choice tochange the class names of the fileds
+  //So we Change One Time Here
+  var DOMInputClasses = {
+
+      addTypeClass : '.add__type',
+      addDesccriptionClass :'.add__description',
+      addValueClass : '.add__value',
+      addButtnClass : '.add__btn'
+
+  }
+
+    return {
+       getInputPublic : function() {
+
+        return{
+
+      inputType : document.querySelector(DOMInputClasses.addTypeClass).value,
+
+      inputDesc : document.querySelector(DOMInputClasses.addDesccriptionClass).value,
+
+      inputValue : document.querySelector(DOMInputClasses.addValueClass).value
+
+          };
+        },
+
+       getDOMInputClassesPublic : function(){
+         return DOMInputClasses;
+       }
+
+    };
 })();
 
 
 //Global App Controller
 var controller = (function(budgtCntrl, UICtrl){
 
+    var DOMClasses = UICtrl.getDOMInputClassesPublic();
+
     var ctrlAddItem = function(){
       console.log('function ctrlAddItem');
+
        //1-get the field input data
+
+        console.log(UICtrl.getInputPublic());
 
       //2-add this Item to BudgetController
 
@@ -29,8 +65,10 @@ var controller = (function(budgtCntrl, UICtrl){
 
     }
 
-  //Some code
-  document.querySelector('.add__btn').addEventListener('click',ctrlAddItem);
+  //Event Handler of Button Add : we choice two approch
+  //If the User click the Button  O r press the Button Enter
+  
+  document.querySelector(DOMClasses.addButtnClass).addEventListener('click',ctrlAddItem);
 
   document.addEventListener('keypress', function(event){
 
@@ -44,23 +82,3 @@ var controller = (function(budgtCntrl, UICtrl){
 
 
 })(budgetController,UIController);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
