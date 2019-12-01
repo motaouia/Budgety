@@ -29,7 +29,7 @@ var budgetController = (function(){
 
     return {
       //Function that allows Adding Item
-      //we must now some information: type of Item(Income/expens),description,value
+      //we must Know some information: type of Item(Income/expens),description,value
       addItem : function(type, des, val){
           var newItem, ID = 0;
 
@@ -52,6 +52,7 @@ var budgetController = (function(){
           data.allItems[type].push(newItem);
 
           //return the new item element
+          console.log(newItem);
           return newItem ;
        },
        // printTesting : function(){
@@ -73,7 +74,9 @@ var UIController = (function(){
       addTypeClass : '.add__type',
       addDesccriptionClass :'.add__description',
       addValueClass : '.add__value',
-      addButtnClass : '.add__btn'
+      addButtnClass : '.add__btn',
+      incomeContainer : '.income__list',
+      expensesContainer : '.expenses__list'
 
   }
 
@@ -89,6 +92,32 @@ var UIController = (function(){
       inputValue : document.querySelector(DOMInputClasses.addValueClass).value
 
           };
+        },
+        
+        addListItem : function(obj, type) {
+          var html, newHtml, element;
+
+          //Create HTML String withe placeHolder
+
+          if(type === 'inc'){
+
+          element = DOMInputClasses.incomeContainer;
+          html = '<div class="item clearfix" id="income-%id%">  <div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button> </div></div></div>';
+            }
+          else if(type === 'exp'){
+          element = DOMInputClasses.expensesContainer;
+          html = '<div class="item clearfix" id="expense-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
+             }
+          //Replace the placeHolder text with some actual data
+             newHtml = html.replace("%id%",obj.id);
+
+             newHtml = newHtml.replace("%description%", obj.description);
+
+             newHtml = newHtml.replace("%value%",obj.value);
+
+          //Insert the HTML into the DOM
+            document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
+
         },
 
        getDOMInputClassesPublic : function(){
@@ -106,7 +135,7 @@ var controller = (function(budgtCntrl, UICtrl){
       var DOMClasses = UICtrl.getDOMInputClassesPublic();
 
         //Event Handler of Button Add : we choice two approch
-        //If the User click the Button  O r press the Button Enter
+        //If the User click the Button  Or press the Button Enter
 
   document.querySelector(DOMClasses.addButtnClass).addEventListener('click',ctrlAddItem);
 
@@ -129,8 +158,9 @@ var controller = (function(budgtCntrl, UICtrl){
 
       //2-add this Item to BudgetController
        newItem = budgtCntrl.addItem(inputObject.inputType, inputObject.inputDesc, inputObject.inputValue);
-
+       
       //3- Add This Item to UI
+      UICtrl.addListItem(newItem, inputObject.inputType);
 
       //4-Caclcul the Budget
 
